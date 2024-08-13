@@ -53,22 +53,28 @@ app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 /* ROUTES */
+
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
+
+
+mongoose.set('strictQuery', false);
+
 /* MONGOOSE SETUP */
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 mongoose
   .connect('mongodb+srv://manassharma850:ByZjM7ICWjYZ9Yup@social.he209.mongodb.net/?retryWrites=true&w=majority&appName=Social', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
 
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
     // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));
+
